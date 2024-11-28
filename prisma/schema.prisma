@@ -1,0 +1,109 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id             Int              @id @default(autoincrement())
+  email          String           @unique
+  name           String
+  password       String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  course         Course[]
+  assignmentMark AssignmentMark[]
+  quizMark       QuizMark[]
+  enrollment     Enrollment[]
+}
+
+model Course {
+  id          Int          @id @default(autoincrement())
+  title       String
+  description String
+  image       String
+  price       Int
+  author      User         @relation(fields: [authorId], references: [id])
+  authorId    Int
+  video       Video[]
+  enrollment  Enrollment[]
+}
+
+model Video {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String
+  url         String
+  course      Course      @relation(fields: [courseId], references: [id])
+  courseId    Int
+  assignment  Assignment?
+  quiz        Quiz[]
+}
+
+model Assignment {
+  id          Int    @id @default(autoincrement())
+  title       String
+  description String
+  totalMark   Int
+  video       Video  @relation(fields: [videoId], references: [id])
+  videoId     Int    @unique
+}
+
+model Quiz {
+  id         Int          @id @default(autoincrement())
+  question   String
+  video      Video        @relation(fields: [videoId], references: [id])
+  videoId    Int
+  quizOption QuizOption[]
+}
+
+model QuizOption {
+  id        Int     @id @default(autoincrement())
+  option    String
+  isCorrect Boolean
+  quiz      Quiz    @relation(fields: [quizId], references: [id])
+  quizId    Int
+}
+
+model QuizMark {
+  id        Int  @id @default(autoincrement())
+  totalMark Int
+  studnet   User @relation(fields: [studentId], references: [id])
+  studentId Int
+  videoId   Int
+}
+
+model AssignmentMark {
+  id        Int    @id @default(autoincrement())
+  mark      Int
+  totalMark Int
+  link      String
+  status    Status @default(pending)
+  studnet   User   @relation(fields: [studentId], references: [id])
+  studentId Int
+  videoId   Int
+}
+
+enum Status {
+  published
+  pending
+}
+
+model Enrollment {
+  id       Int    @id @default(autoincrement())
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId Int
+}
