@@ -1,4 +1,3 @@
-import { User2Icon } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
@@ -11,6 +10,7 @@ import {
 import { getServerSession } from "next-auth";
 import { Button } from "../ui/button";
 import authOptions from "@/lib/auth";
+import UserCard from "./UserCard";
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
@@ -47,34 +47,13 @@ const Navbar = async () => {
 
       {/* nav buttons */}
       <div className="hidden md:block">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <User2Icon />
-            </TooltipTrigger>
-            <TooltipContent className="p-6 space-y-4">
-              <p>Name: {name}</p>
-              <p>Email: {email}</p>
-              <div className="flex gap-6">
-                <Button>Profile</Button>
-                <Button variants="secondary">Logout</Button>
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        {/* {user?.accessToken ? (
-          <div className="flex gap-6 items-center">
-            <p>
-              <User2Icon></User2Icon>
-            </p>
-            <Button onClick={logout}>Logout</Button>
-          </div>
+        {name ? (
+          <UserCard name={name} email={email} />
         ) : (
-          <p to={studentLogin} className="text-base md:text-lg font-medium">
-            <Button className="bg-purple-400">Login</Button>
-          </p>
-        )} */}
+          <Link href="/">
+            <Button>Login</Button>
+          </Link>
+        )}
       </div>
 
       {/* mobile nav list */}
