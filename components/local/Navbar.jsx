@@ -14,7 +14,7 @@ import UserCard from "./UserCard";
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
-  const { name, email } = session?.user;
+  const { name, email } = session?.user || {};
   return (
     <nav className=" sticky top-0 left-0 w-full border flex justify-between items-center bg-white z-50  px-[10%] min-h-[10vh] md:py-0  ">
       {/* logo */}
@@ -50,7 +50,7 @@ const Navbar = async () => {
         {name ? (
           <UserCard name={name} email={email} />
         ) : (
-          <Link href="/">
+          <Link href="/login">
             <Button>Login</Button>
           </Link>
         )}

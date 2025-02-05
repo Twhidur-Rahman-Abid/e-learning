@@ -65,30 +65,30 @@ const CoursePlayerPage = async ({ params, searchParams }) => {
   );
 
   // Check the user is submitted quiz
-  const isSubmitedQuiz = await prisma.quizMark.findFirst({
-    where: {
-      videoId: Number(videoId),
-      studentId: Number(userId),
-    },
-    select: {
-      id: true,
-    },
-  });
+  // const isSubmitedQuiz = await prisma.quizMark.findFirst({
+  //   where: {
+  //     videoId: Number(videoId),
+  //     studentId: Number(userId),
+  //   },
+  //   select: {
+  //     id: true,
+  //   },
+  // });
 
   let quizButton;
-  if (quiz?.length > 0) {
-    if (isSubmitedQuiz) {
-      quizButton = <Button className="bg-purple-400">Quiz Submitted</Button>;
-    } else {
-      quizButton = (
-        <Link href={`/course-player/${id}/${videoId}/quiz`}>
-          <Button>Quiz</Button>
-        </Link>
-      );
-    }
-  } else {
-    quizButton = <h1>This video has no quizzes</h1>;
-  }
+  // if (quiz?.length > 0) {
+  //   if (isSubmitedQuiz) {
+  //     quizButton = <Button className="bg-purple-400">Quiz Submitted</Button>;
+  //   } else {
+  //     quizButton = (
+  //       <Link href={`/course-player/${id}/${videoId}/quiz`}>
+  //         <Button>Quiz</Button>
+  //       </Link>
+  //     );
+  //   }
+  // } else {
+  //   quizButton = <h1>This video has no quizzes</h1>;
+  // }
 
   return (
     <div className="p-[5%] mt-6">
@@ -101,7 +101,7 @@ const CoursePlayerPage = async ({ params, searchParams }) => {
               <p>Your browser does not support HTML video</p>
             </video>
           ) : (
-            { videoContent }
+            <div>not found</div>
           )}
 
           <div className="flex justify-between ">

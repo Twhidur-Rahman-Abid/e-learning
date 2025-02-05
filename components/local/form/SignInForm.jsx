@@ -26,11 +26,14 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (data) => {
+    console.log(data);
     const logindata = await signIn("credentials", {
       redirect: false,
       email: data.email,
       password: data.password,
     });
+
+    console.log(logindata);
 
     if (logindata?.error) {
       console.log(logindata?.error);
