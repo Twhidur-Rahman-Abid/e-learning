@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useState } from "react";
 import SelectGroup from "./form/SelectGroup";
@@ -17,7 +18,6 @@ const CourseSelect = ({
 
   useEffect(() => {
     if (selecet) {
-      console.log(window.location);
       router.push(`${window.location.pathname}?${search}=${selecet}`);
     }
   }, [selecet]);
